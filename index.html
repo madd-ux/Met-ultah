@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HBD Sayang! 💖</title>
+    <style>
+        :root {
+            --bg-cream: #FFFDD0;
+            --soft-cream: #fdf5e6;
+            --text-cokelat: #5d4037;
+            --aksen-pink: #ff4d6d;
+            --border-bunga: #eebdc4; /* Warna bingkai bunga */
+        }
+
+        body {
+            margin: 0; padding: 0;
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-cream);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            text-align: center;
+            color: var(--text-cokelat);
+        }
+
+        /* --- BACKGROUND HATI --- */
+        .hearts {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 1; pointer-events: none;
+        }
+        .heart-bg {
+            position: absolute; font-size: 20px;
+            animation: float-bg 5s linear infinite; opacity: 0.6;
+        }
+        @keyframes float-bg {
+            0% { transform: translateY(110vh) rotate(0deg); }
+            100% { transform: translateY(-10vh) rotate(360deg); }
+        }
+
+        /* --- KOTAK PESAN --- */
+        .container {
+            width: 85%; max-width: 380px;
+            background: rgba(253, 245, 230, 0.95);
+            padding: 40px 20px; border-radius: 30px;
+            box-shadow: 0 15px 35px rgba(93, 64, 55, 0.1);
+            position: relative; z-index: 5; border: 4px solid #fff;
+        }
+
+        /* --- FOTO NGAMBANG DENGAN BINGKAI BUNGA & GOYANG --- */
+        .foto-overlay-container {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 10; pointer-events: none; display: none;
+        }
+
+        .foto-frame {
+            position: absolute;
+            background: white;
+            padding: 10px;
+            border-radius: 15px;
+            /* Efek Border Bunga (Titik-titik warna rose) */
+            border: 5px double var(--border-bunga);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            animation: swaying 4s ease-in-out infinite;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .foto-3x4 {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        /* Ikon bunga di pojok bingkai */
+        .foto-frame::before {
+            content: '🌸';
+            position: absolute;
+            top: -15px; right: -15px;
+            font-size: 25px;
+        }
+        .foto-frame::after {
+            content: '🌿';
+            position: absolute;
+            bottom: -15px; left: -15px;
+            font-size: 20px;
+        }
+
+        /* Ukuran per slot */
+        .slot-atas { width: 120px; height: 160px; left: 5%; top: 5%; --r: -12deg; }
+        .slot-tengah { width: 95px; height: 125px; right: 5%; top: 18%; --r: 12deg; animation-delay: 1s; }
+        .slot-bawah { width: 135px; height: 180px; left: 8%; bottom: 5%; --r: -8deg; animation-delay: 2s; }
+
+        /* Animasi Goyang-Goyang Lucu */
+        @keyframes swaying {
+            0%, 100% { transform: translateY(0) rotate(var(--r)); }
+            33% { transform: translateY(-15px) rotate(calc(var(--r) + 5deg)); }
+            66% { transform: translateY(-5px) rotate(calc(var(--r) - 5deg)); }
+        }
+
+        /* --- PARTIKEL LEDAKAN --- */
+        .particle {
+            position: fixed; pointer-events: none; z-index: 20;
+            font-size: 30px; transition: all 1.2s cubic-bezier(0.12, 0.89, 0.98, 0.47);
+        }
+
+        .slide { display: none; }
+        .active { 
+            display: block; 
+            animation: bounceIn 0.8s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+        }
+
+        @keyframes bounceIn {
+            0% { opacity: 0; transform: scale(0.3); }
+            50% { opacity: 1; transform: scale(1.05); }
+            70% { transform: scale(0.9); }
+            100% { transform: scale(1); }
+        }
+
+        /* ICON GERAK (ANIMASI) */
+        .icon-bounce {
+    font-size: 75px; 
+    display: inline-block;
+    margin-bottom: 20px;
+    animation: bounce-banget 1s cubic-bezier(0.28, 0.84, 0.42, 1) infinite;
+}
+
+@keyframes bounce-banget {
+    0%, 100% { transform: translateY(0) scale(1, 1); }
+    50% { transform: translateY(-45px) scale(0.9, 1.1); }
+    90% { transform: translateY(0) scale(1.1, 0.8); }
+}
+
+.btn {
+    background: #ff4d6d; /* Warna pink */
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 25px;
+    font-weight: bold;
+    font-family: 'Poppins', sans-serif;
+    cursor: pointer;
+    margin-top: 25px;
+    box-shadow: 0 5px 15px rgba(255, 77, 109, 0.3);
+    transition: 0.3s;
+    /* Pastikan tidak ada transform yang aneh di sini */
+}
+
+.btn:hover {
+    transform: scale(1.05);
+    background: #ff758f;
+}
+
+    </style>
+</head>
+<body>
+
+<div class="hearts" id="heart-container"></div>
+
+<div class="container">
+    <div class="slide active" id="slide1">
+        <div class="icon-bounce">🎁</div>
+        <h1>Paket Datang!</h1>
+        <button class="btn" onclick="nextSlide(2)">Buka Paket 💌</button>
+    </div>
+
+    <div class="slide" id="slide2">
+        <div class="icon-bounce">🎂</div>
+        <h1>HBD Sayang! 🎉</h1>
+        <p>Surpriiiseee! <br>Selamat ulang tahun ya!</p>
+        <button class="btn" onclick="nextSlide(3)">Lanjut ✨</button>
+    </div>
+
+    <div class="slide" id="slide3">
+        <div class="icon-bounce">🧸</div>
+        <h1>Miss You...</h1>
+        <p>Sabar ya, kita pasti ketemu!</p>
+        <button class="btn" onclick="nextSlide(4)">Lihat Foto Kita 📸</button>
+    </div>
+
+    <div class="slide" id="slide4">
+        <img src="https://media.tenor.com/y297R_I099GAAAAi/quby-pentol.gif" style="width:70px; position:absolute; top:-40px; right:0px;">
+        <h1>Gemes Kan?</h1>
+        <p>Kenangan indah kita <br> melayang-layang manis! 💖</p>
+        <button class="btn" onclick="nextSlide(5)">Terakhir ✨</button>
+    </div>
+
+    <div class="slide" id="slide5">
+        <div class="icon-bounce">🫶</div>
+        <h1>Love You 3000!</h1>
+        <button class="btn" onclick="location.reload()">Ulangi 🔄</button>
+    </div>
+</div>
+
+<div class="foto-overlay-container" id="foto-bg">
+    <div class="foto-frame slot-atas">
+        <img src="https://i.ibb.co.com/QLczSxK/IMG-20250802-WA0014.jpg" alt="IMG-20250802-WA0014" class="foto-3x4">
+    </div>
+    <div class="foto-frame slot-tengah">
+        <img src="https://i.ibb.co.com/yv2jKxP/IMG-20250802-WA0010.jpg" alt="IMG-20250802-WA0010"  class="foto-3x4">
+    </div>
+    <div class="foto-frame slot-bawah">
+        <img src="https://i.ibb.co.com/5VymkBt/IMG-20250802-WA0016.jpg" alt="IMG-20250802-WA0016" class="foto-3x4">
+    </div>
+</div>
+
+<script>
+    let loveInterval;
+
+    function nextSlide(n) {
+        document.querySelectorAll('.slide').forEach(s => s.classList.remove('active'));
+        document.getElementById('slide' + n).classList.add('active');
+
+        const fotoContainer = document.getElementById('foto-bg');
+        
+        if(n === 2) { sideExplosion('🎉'); sideExplosion('✨'); }
+        
+        if(n === 4) {
+            fotoContainer.style.display = 'block';
+        } else {
+            fotoContainer.style.display = 'none';
+        }
+
+        if(n === 5) {
+            loveInterval = setInterval(() => { sideExplosion('❤️'); }, 400);
+        } else {
+            clearInterval(loveInterval);
+        }
+    }
+
+    function sideExplosion(type) {
+        const sides = ['0vw', '100vw'];
+        sides.forEach(side => {
+            for(let i=0; i<20; i++) {
+                const p = document.createElement('div');
+                p.className = 'particle';
+                p.innerText = type;
+                p.style.left = side; 
+                p.style.top = (Math.random() * 50 + 25) + 'vh';
+                document.body.appendChild(p);
+                const moveX = side === '0vw' ? (Math.random() * 80 + 10) : -(Math.random() * 80 + 10);
+                const moveY = (Math.random() - 0.5) * 100;
+                setTimeout(() => {
+                    p.style.transform = `translate(${moveX}vw, ${moveY}vh) rotate(${Math.random() * 360}deg) scale(${Math.random() * 2})`;
+                    p.style.opacity = '0';
+                }, 50);
+                setTimeout(() => { p.remove(); }, 1200);
+            }
+        });
+    }
+
+    // Efek Hati Background
+    const heartContainer = document.getElementById('heart-container');
+    const emojis = ['❤️', '💖', '✨', '🌸'];
+    function createHeart() {
+        const heart = document.createElement('div');
+        heart.className = 'heart-bg';
+        heart.innerText = emojis[Math.floor(Math.random() * emojis.length)];
+        heart.style.left = Math.random() * 100 + 'vw';
+        heart.style.animationDuration = (Math.random() * 2 + 3) + 's';
+        heartContainer.appendChild(heart);
+        setTimeout(() => { heart.remove(); }, 5000);
+    }
+    setInterval(createHeart, 300);
+</script>
+
+</body>
+</html>
